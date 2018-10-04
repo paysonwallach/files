@@ -14,7 +14,7 @@ set(CFLAGS
 include_directories(${CMAKE_SOURCE_DIR}/libcore/)
 include_directories(${CMAKE_BINARY_DIR}/libcore/)
 
-vala_precompile(VALA_C pantheon-files-cloudproviders
+vala_precompile(VALA_C pantheon-files-cloud
     plugin.vala
 PACKAGES
     granite
@@ -32,10 +32,10 @@ OPTIONS
 )
 add_definitions(${CFLAGS})
 link_directories(${LIB_PATHS})
-add_library(pantheon-files-cloudproviders SHARED
+add_library(pantheon-files-cloud SHARED
     ${VALA_C})
-target_link_libraries(pantheon-files-cloudproviders ${DEPS_LIBRARIES} pantheon-files-core)
-add_dependencies(pantheon-files-cloudproviders pantheon-files-core)
-install(TARGETS pantheon-files-cloudproviders DESTINATION ${PLUGIN_DIR}/core/)
-install(FILES pantheon-files-cloudproviders.plug DESTINATION ${PLUGIN_DIR}/core/)
+target_link_libraries(pantheon-files-cloud ${DEPS_LIBRARIES} pantheon-files-core)
+add_dependencies(pantheon-files-cloud pantheon-files-core)
+install(TARGETS pantheon-files-cloud DESTINATION ${PLUGIN_DIR}/core/)
+install(FILES pantheon-files-cloud.plug DESTINATION ${PLUGIN_DIR}/core/)
 include_directories(${CMAKE_BINARY_DIR}/plugins/)

@@ -17,11 +17,17 @@
     Author(s):  Fernando da Silva Sousa <wild.nando@gmail.com>
 ***/
 
-public class Marlin.Plugins.CloudProviders : Marlin.Plugins.Base {
-    public CloudProviders () {
+public class Marlin.Plugins.Cloud : Marlin.Plugins.Base {
+    CloudProviders.Collector collector = CloudProviders.Collector.dup_singleton ();
+
+    public Cloud () {
+        print ("init cp plugin");
+        foreach (var provider in collector.get_providers ()) {
+            print ("got something");
+        }
     }
 }
 
 public Marlin.Plugins.Base module_init () {
-    return new Marlin.Plugins.CloudProviders ();
+    return new Marlin.Plugins.Cloud ();
 }
