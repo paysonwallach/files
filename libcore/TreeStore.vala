@@ -95,7 +95,8 @@ public class Marlin.TreeStore : Gtk.TreeStore {
             Column.SHOW_EJECT, item.can_eject,
             Column.SPINNER_PULSE, item.spinner_pulse,
             Column.FREE_SPACE, item.free_space,
-            Column.DISK_SIZE, item.disk_size
+            Column.DISK_SIZE, item.disk_size,
+            Column.MENU_MODEL, item.menu_model
         );
     }
 }
