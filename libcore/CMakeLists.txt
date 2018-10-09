@@ -33,6 +33,8 @@ vala_precompile(VALA_C ${PKGNAME}
     SoundManager.vala
     StockDialogs.vala
     TrashMonitor.vala
+    TreeItem.vala
+    TreeStore.vala
     UserUtils.vala
     IconInfo.vala
     Thumbnailer.vala

@@ -177,15 +177,15 @@ namespace Marlin.Places {
             crt.xpad = ICON_XPAD;
             crt.ypad = BOOKMARK_YPAD;
             col.pack_start (crt, false);
-            col.set_attributes (crt, "visible", Column.NOT_CATEGORY);
+            col.set_attributes (crt, "visible", TreeStore.Column.NOT_CATEGORY);
 
             var crpb = new Gtk.CellRendererPixbuf (); /* Icon for bookmark or device */
             crpb.stock_size = Gtk.IconSize.MENU;
             crpb.ypad = BOOKMARK_YPAD;
             col.pack_start (crpb, false);
             col.set_attributes (crpb,
-                                "gicon", Column.ICON,
-                                "visible", Column.NOT_CATEGORY);
+                                "gicon", TreeStore.Column.ICON,
+                                "visible", TreeStore.Column.NOT_CATEGORY);
 
             var crd = new Marlin.CellRendererDisk (); /* Renders category & bookmark text and diskspace graphic */
             name_renderer = crd as Gtk.CellRendererText;
@@ -196,10 +196,10 @@ namespace Marlin.Places {
 
             col.pack_start (crd, true);
             col.set_attributes (crd,
-                                "text", Column.NAME,
-                                "free_space", Column.FREE_SPACE,
-                                "disk_size", Column.DISK_SIZE,
-                                "editable-set", Column.BOOKMARK);
+                                "text", TreeStore.Column.NAME,
+                                "free_space", TreeStore.Column.FREE_SPACE,
+                                "disk_size", TreeStore.Column.DISK_SIZE,
+                                "editable-set", TreeStore.Column.BOOKMARK);
 
             /* renderer function sets font weight and ypadding depending on whether bookmark or category */
             col.set_cell_data_func (name_renderer, category_renderer_func);
@@ -208,9 +208,9 @@ namespace Marlin.Places {
             crsp.ypad = BOOKMARK_YPAD;
             col.pack_end (crsp, false);
             col.set_attributes (crsp,
-                                "visible", Column.SHOW_SPINNER,
-                                "active", Column.SHOW_SPINNER,
-                                "pulse", Column.SPINNER_PULSE);
+                                "visible", TreeStore.Column.SHOW_SPINNER,
+                                "active", TreeStore.Column.SHOW_SPINNER,
+                                "pulse", TreeStore.Column.SPINNER_PULSE);
 
             crpb = new Gtk.CellRendererPixbuf (); /* Icon for eject button  (hidden while ejecting or unmounted) and another signs */
             this.eject_spinner_cell_renderer = crpb;
@@ -220,9 +220,9 @@ namespace Marlin.Places {
 
             col.pack_start (crpb, false);
             col.set_attributes (crpb,
-                                "gicon", Column.ACTION_ICON);
-            //  col.set_attributes (crpb, "visible", Column.SHOW_EJECT);
-            //  TODO : Now the columns that can eject won't hide their icons
+                                "gicon", TreeStore.Column.ACTION_ICON);
+            //  col.set_attributes (crpb, "visible", TreeStore.Column.SHOW_EJECT);
+            //  FIXME: Now the columns that can eject might not hide their icons
 
             var cre = new Granite.Widgets.CellRendererExpander (); /* Expander button for categories */
             expander_renderer = cre;
@@ -232,10 +232,10 @@ namespace Marlin.Places {
             cre.ypad = BOOKMARK_YPAD;
 
             col.pack_end (cre, false);
-            col.set_attributes (cre, "visible", Column.IS_CATEGORY);
+            col.set_attributes (cre, "visible", TreeStore.Column.IS_CATEGORY);
 
             tree_view.append_column (col);
-            tree_view.tooltip_column = Column.TOOLTIP;
+            tree_view.tooltip_column = TreeStore.Column.TOOLTIP;
             tree_view.model = this.store;
 
 
@@ -246,7 +246,7 @@ namespace Marlin.Places {
             style_context.add_class (Gtk.STYLE_CLASS_SIDEBAR);
             style_context.add_class (Granite.STYLE_CLASS_SOURCE_LIST);
 
-            tree_view.set_search_column (Column.NAME);
+            tree_view.set_search_column (TreeStore.Column.NAME);
             var selection = tree_view.get_selection ();
             selection.set_mode (Gtk.SelectionMode.BROWSE);
 
@@ -396,26 +396,26 @@ namespace Marlin.Places {
             this.store.append (out iter, parent);
 
             this.store.@set (iter,
-                            Column.ROW_TYPE, place_type,
-                            Column.URI, uri,
-                            Column.DRIVE, drive,
-                            Column.VOLUME, volume,
-                            Column.MOUNT, mount,
-                            Column.NAME, converted_name,
-                            Column.ICON, icon,
-                            Column.INDEX, index,
-                            Column.CAN_EJECT, show_eject_button,
-                            Column.NO_EJECT, !show_eject_button,
-                            Column.BOOKMARK, place_type == Marlin.PlaceType.BOOKMARK,
-                            Column.IS_CATEGORY, is_category,
-                            Column.NOT_CATEGORY, !is_category,
-                            Column.TOOLTIP, tooltip,
-                            Column.ACTION_ICON, action_icon,
-                            Column.SHOW_SPINNER, false,
-                            Column.SHOW_EJECT, show_eject_button,
-                            Column.SPINNER_PULSE, 0,
-                            Column.FREE_SPACE, (uint64)0,
-                            Column.DISK_SIZE, (uint64)0);
+                            TreeStore.Column.ROW_TYPE, place_type,
+                            TreeStore.Column.URI, uri,
+                            TreeStore.Column.DRIVE, drive,
+                            TreeStore.Column.VOLUME, volume,
+                            TreeStore.Column.MOUNT, mount,
+                            TreeStore.Column.NAME, converted_name,
+                            TreeStore.Column.ICON, icon,
+                            TreeStore.Column.INDEX, index,
+                            TreeStore.Column.CAN_EJECT, show_eject_button,
+                            TreeStore.Column.NO_EJECT, !show_eject_button,
+                            TreeStore.Column.BOOKMARK, place_type == Marlin.PlaceType.BOOKMARK,
+                            TreeStore.Column.IS_CATEGORY, is_category,
+                            TreeStore.Column.NOT_CATEGORY, !is_category,
+                            TreeStore.Column.TOOLTIP, tooltip,
+                            TreeStore.Column.ACTION_ICON, action_icon,
+                            TreeStore.Column.SHOW_SPINNER, false,
+                            TreeStore.Column.SHOW_EJECT, show_eject_button,
+                            TreeStore.Column.SPINNER_PULSE, 0,
+                            TreeStore.Column.FREE_SPACE, (uint64)0,
+                            TreeStore.Column.DISK_SIZE, (uint64)0);
 
             return iter;
         }
@@ -427,7 +427,7 @@ namespace Marlin.Places {
                 string u;
                 bool is_bookmark;
 
-                model.@get (iter, Column.URI, out u, Column.BOOKMARK, out is_bookmark);
+                model.@get (iter, TreeStore.Column.URI, out u, TreeStore.Column.BOOKMARK, out is_bookmark);
                 if (is_bookmark && u == uri) {
                     found = true;
                     return true;
@@ -467,7 +467,7 @@ namespace Marlin.Places {
             this.n_builtins_before = 0;
 
             if ((tree_view.get_selection ()).get_selected (null, out iter)) {
-                store.@get (iter, Column.URI, &last_selected_uri);
+                store.@get (iter, TreeStore.Column.URI, &last_selected_uri);
             } else {
                 last_selected_uri = null;
             }
@@ -875,9 +875,9 @@ namespace Marlin.Places {
                     Gtk.TreeIter? itr = null;
                     store.get_iter (out itr, rowref.get_path ());
                     store.@set (itr,
-                                Column.FREE_SPACE, fs_free,
-                                Column.DISK_SIZE, fs_capacity,
-                                Column.TOOLTIP, tooltip);
+                                TreeStore.Column.FREE_SPACE, fs_free,
+                                TreeStore.Column.DISK_SIZE, fs_capacity,
+                                TreeStore.Column.TOOLTIP, tooltip);
                 } else {
                     warning ("Attempt to add tooltip for %s failed - invalid rowref", root.get_uri ());
                 }
@@ -952,7 +952,7 @@ namespace Marlin.Places {
                     Gtk.TreeIter iter;
                     store.get_iter (out iter, path);
                     string uri;
-                    this.store.@get (iter, Column.URI, out uri);
+                    this.store.@get (iter, TreeStore.Column.URI, out uri);
                     if (uri != null) {
                         GOF.File file = GOF.File.get_by_uri (uri);
                         if (file.ensure_query_info ()) {
@@ -1077,8 +1077,8 @@ namespace Marlin.Places {
             Marlin.PlaceType type;
             uint target_position;
             store.@get (iter,
-                        Column.ROW_TYPE, out type,
-                        Column.INDEX, out target_position);
+                        TreeStore.Column.ROW_TYPE, out type,
+                        TreeStore.Column.INDEX, out target_position);
 
             if (type == Marlin.PlaceType.BOOKMARK || type == Marlin.PlaceType.BUILT_IN) {
                 switch (info) {
@@ -1097,7 +1097,7 @@ namespace Marlin.Places {
 
         private bool process_drop_onto (Gtk.TreeIter iter, Gdk.DragContext context, uint info) {
             string drop_uri;
-            store.@get (iter, Column.URI, out drop_uri);
+            store.@get (iter, TreeStore.Column.URI, out drop_uri);
 
             var real_action = context.get_selected_action ();
 
@@ -1299,7 +1299,7 @@ namespace Marlin.Places {
 
             string? uri = null;
             Marlin.PluginCallbackFunc? f = null;
-            store.@get (iter, Column.URI, out uri, Column.PLUGIN_CALLBACK, out f);
+            store.@get (iter, TreeStore.Column.URI, out uri, TreeStore.Column.PLUGIN_CALLBACK, out f);
 
             if (uri != null) {
                 path_change_request (uri, open_flag);
@@ -1311,8 +1311,8 @@ namespace Marlin.Places {
 
                 var mount_op = new Gtk.MountOperation (window);
                 store.@get (iter,
-                            Column.DRIVE, out drive,
-                            Column.VOLUME, out volume);
+                            TreeStore.Column.DRIVE, out drive,
+                            TreeStore.Column.VOLUME, out volume);
 
                 if (volume != null && !mounting) {
                     mount_volume (volume, mount_op, open_flag);
@@ -1409,7 +1409,7 @@ namespace Marlin.Places {
             }
 
             uint index;
-            store.@get (iter, Column.INDEX, out index);
+            store.@get (iter, TreeStore.Column.INDEX, out index);
             index = index <= n_builtins_before ? 0 : index - n_builtins_before;
             bookmarks.delete_item_at (index);
         }
@@ -1426,7 +1426,7 @@ namespace Marlin.Places {
                 }
 
                 uint old_position;
-                store.@get (iter, Column.INDEX, out old_position);
+                store.@get (iter, TreeStore.Column.INDEX, out old_position);
 
                 /* Positions are currently indices into the Sidebar TreeView.  We need to take account
                  * of builtin entries like "Home" to convert these positions into indices into the personal
@@ -1475,12 +1475,12 @@ namespace Marlin.Places {
             string uri;
             bool is_bookmark;
             store.@get (iter,
-                        Column.ROW_TYPE, out type,
-                        Column.DRIVE, out drive,
-                        Column.VOLUME, out volume,
-                        Column.MOUNT, out mount,
-                        Column.URI, out uri,
-                        Column.BOOKMARK, out is_bookmark
+                        TreeStore.Column.ROW_TYPE, out type,
+                        TreeStore.Column.DRIVE, out drive,
+                        TreeStore.Column.VOLUME, out volume,
+                        TreeStore.Column.MOUNT, out mount,
+                        TreeStore.Column.URI, out uri,
+                        TreeStore.Column.BOOKMARK, out is_bookmark
             );
             bool is_plugin = (type == Marlin.PlaceType.PLUGIN_ITEM);
 
@@ -1506,7 +1506,7 @@ namespace Marlin.Places {
 
             if (is_plugin) {
                 MenuModel model;
-                store.get (iter, Column.MENU_MODEL, out model);
+                store.get (iter, TreeStore.Column.MENU_MODEL, out model);
 
                 var menu = new PopupMenuBuilder ()
                 .add_open (open_shortcut_cb);
@@ -1577,7 +1577,7 @@ namespace Marlin.Places {
                 bool child_valid = store.iter_children (out child_iter, iter);
                 while (child_valid) {
                     string uri;
-                    store.@get (child_iter, Column.URI, out uri);
+                    store.@get (child_iter, TreeStore.Column.URI, out uri);
                     if (uri == null) {
                         break;
                     }
@@ -1607,7 +1607,7 @@ namespace Marlin.Places {
             store.get_iter (out iter, path);
 
             uint index;
-            store.@get (iter, Column.INDEX, out index);
+            store.@get (iter, TreeStore.Column.INDEX, out index);
             index-= this.n_builtins_before;
 
             Marlin.Bookmark? bookmark = this.bookmarks.item_at (index);
@@ -1678,11 +1678,11 @@ namespace Marlin.Places {
             bool is_category, show_eject_button;
             Icon? action_icon;
             uint64 disk_size = 0;
-            model.@get (iter, Column.NAME, out text,
-                              Column.IS_CATEGORY, out is_category,
-                              Column.DISK_SIZE, out disk_size,
-                              Column.ACTION_ICON, out action_icon,
-                              Column.SHOW_EJECT, out show_eject_button, -1);
+            model.@get (iter, TreeStore.Column.NAME, out text,
+                              TreeStore.Column.IS_CATEGORY, out is_category,
+                              TreeStore.Column.DISK_SIZE, out disk_size,
+                              TreeStore.Column.ACTION_ICON, out action_icon,
+                              TreeStore.Column.SHOW_EJECT, out show_eject_button, -1);
 
             if (is_category) {
                 crt.markup = "<b>" + text + "</b>";
@@ -1706,7 +1706,7 @@ namespace Marlin.Places {
                                                      Gtk.TreeIter iter,
                                                      Gtk.TreePath path) {
             Marlin.PlaceType type;
-            store.@get (iter, Column.ROW_TYPE, out type);
+            store.@get (iter, TreeStore.Column.ROW_TYPE, out type);
             expander_update_pref_state (type, true);
         }
 
@@ -1714,7 +1714,7 @@ namespace Marlin.Places {
                                                       Gtk.TreeIter iter,
                                                       Gtk.TreePath path) {
             Marlin.PlaceType type;
-            store.@get (iter, Column.ROW_TYPE, out type);
+            store.@get (iter, TreeStore.Column.ROW_TYPE, out type);
             expander_update_pref_state (type, false);
         }
 
@@ -1923,7 +1923,7 @@ namespace Marlin.Places {
                 }
 
                 store.get_iter (out iter, path);
-                store.@get (iter, Column.CAN_EJECT, out show_eject);
+                store.@get (iter, TreeStore.Column.CAN_EJECT, out show_eject);
 
                 if (!show_eject || ejecting_or_unmounting) {
                     return false;
@@ -2038,8 +2038,8 @@ namespace Marlin.Places {
             if (row_ref != null && row_ref.valid ()) {
                 Gtk.TreeIter iter;
                 if (store.get_iter (out iter, row_ref.get_path ())) {
-                    store.@set (iter, Column.SHOW_SPINNER, false);
-                    store.@set (iter, Column.SHOW_EJECT, !success); /* continue to show eject if did not succeed */
+                    store.@set (iter, TreeStore.Column.SHOW_SPINNER, false);
+                    store.@set (iter, TreeStore.Column.SHOW_EJECT, !success); /* continue to show eject if did not succeed */
                 }
             } else {
                 warning ("No row ref");
@@ -2088,10 +2088,10 @@ namespace Marlin.Places {
             bool spinner_active;
 
             store.@get (iter,
-                        Column.MOUNT, out mount,
-                        Column.VOLUME, out volume,
-                        Column.DRIVE, out drive,
-                        Column.SHOW_SPINNER, out spinner_active);
+                        TreeStore.Column.MOUNT, out mount,
+                        TreeStore.Column.VOLUME, out volume,
+                        TreeStore.Column.DRIVE, out drive,
+                        TreeStore.Column.SHOW_SPINNER, out spinner_active);
 
             /* Return if already ejecting */
             if (spinner_active) {
@@ -2109,8 +2109,8 @@ namespace Marlin.Places {
             }
 
             var rowref = new Gtk.TreeRowReference (store, path);
-            store.@set (iter, Column.SHOW_SPINNER, true);
-            store.@set (iter, Column.SHOW_EJECT, false);
+            store.@set (iter, TreeStore.Column.SHOW_SPINNER, true);
+            store.@set (iter, TreeStore.Column.SHOW_EJECT, false);
             Timeout.add (100, ()=>{
                 uint val;
 
@@ -2118,13 +2118,13 @@ namespace Marlin.Places {
                     return false;
                 }
 
-                store.@get (iter, Column.SHOW_SPINNER, out spinner_active);
+                store.@get (iter, TreeStore.Column.SHOW_SPINNER, out spinner_active);
                 if (!spinner_active) {
                     return false;
                 }
 
-                store.@get (iter, Column.SPINNER_PULSE, out val);
-                store.@set (iter, Column.SPINNER_PULSE, ++val);
+                store.@get (iter, TreeStore.Column.SPINNER_PULSE, out val);
+                store.@set (iter, TreeStore.Column.SPINNER_PULSE, ++val);
                 return true;
             });
 
@@ -2168,7 +2168,7 @@ namespace Marlin.Places {
             }
 
             Volume volume;
-            store.@get (iter, Column.VOLUME, out volume);
+            store.@get (iter, TreeStore.Column.VOLUME, out volume);
             if (volume != null) {
                 Marlin.FileOperations.mount_volume (null, volume, false);
             }
@@ -2193,9 +2193,9 @@ namespace Marlin.Places {
             Volume volume;
             string uri;
             store.@get (iter,
-                        Column.VOLUME, out volume,
-                        Column.MOUNT, out mount,
-                        Column.URI, out uri);
+                        TreeStore.Column.VOLUME, out volume,
+                        TreeStore.Column.MOUNT, out mount,
+                        TreeStore.Column.URI, out uri);
 
             if (mount == null && volume != null) {
                 /* Mount the device if possible, defer showing the dialog after
@@ -2235,8 +2235,8 @@ namespace Marlin.Places {
             Mount mount;
             string uri;
             store.@get (iter,
-                        Column.URI, out uri,
-                        Column.MOUNT, out mount);
+                        TreeStore.Column.URI, out uri,
+                        TreeStore.Column.MOUNT, out mount);
 
             if (mount != null) {
                 /* A particular mount was clicked - empty only the trash on the mount */
@@ -2444,7 +2444,7 @@ namespace Marlin.Places {
             }
 
             bool is_bookmark;
-            store.@get (iter, Column.BOOKMARK, out is_bookmark, -1);
+            store.@get (iter, TreeStore.Column.BOOKMARK, out is_bookmark, -1);
             return is_bookmark;
         }
 
