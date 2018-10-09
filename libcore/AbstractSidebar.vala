@@ -49,7 +49,7 @@ namespace Marlin {
             IS_CATEGORY,
             NOT_CATEGORY,
             TOOLTIP,
-            EJECT_ICON,
+            ACTION_ICON,
             SHOW_SPINNER,
             SHOW_EJECT,
             SPINNER_PULSE,
@@ -99,11 +99,11 @@ namespace Marlin {
             add_extra_item (network_category_reference, text, tooltip, icon, cb);
         }
 
-        public void add_extra_network_item_with_menu_model (string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb, MenuModel? menu = null) {
-            add_extra_item (network_category_reference, text, tooltip, icon, cb, menu);
+        public void add_plugin_item (string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb, MenuModel? menu = null, Icon? action_icon = null) {
+            add_extra_item (network_category_reference, text, tooltip, icon, cb, menu, action_icon);
         }
 
-        public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb, MenuModel? menu = null) {
+        public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb, MenuModel? menu = null, Icon? action_icon = null) {
             Gtk.TreeIter iter;
             store.get_iter (out iter, category.get_path ());
             iter = add_place (PlaceType.PLUGIN_ITEM,
@@ -123,6 +123,10 @@ namespace Marlin {
             if (menu != null) {
                 store.@set (iter, Column.MENU_MODEL, menu);
             }
+
+            if (action_icon != null) {
+                store.@set (iter, Column.ACTION_ICON, action_icon);
+            }
         }
 
        protected abstract Gtk.TreeIter add_place (Marlin.PlaceType place_type,
@@ -134,6 +138,7 @@ namespace Marlin {
                                                   Volume? volume,
                                                   Mount? mount,
                                                   uint index,
-                                                  string? tooltip = null) ;
+                                                  string? tooltip = null,
+                                                  Icon? action_icon = null) ;
     }
 }
