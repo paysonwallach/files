@@ -23,7 +23,7 @@ public class Marlin.TreeItem : Object {
     public Drive? drive { get; set; default = null; }
     public Volume? volume { get; set; default = null; }
     public Mount? mount { get; set; default = null; }
-    public Marlin.PlaceType place_type { get;set;default=0; }
+    public Marlin.PlaceType place_type { get;set; }
     public Icon? icon { get; set; default = null; }
     public uint index { get; set; }
     public bool can_eject { get;set; }
@@ -34,6 +34,10 @@ public class Marlin.TreeItem : Object {
     public uint64 free_space { get;set; default = 0; }
     public uint64 disk_size { get;set; default = 0; }
     public MenuModel? menu_model { get;set; }
+
+    public TreeItem (Marlin.PlaceType _type) {
+        place_type = _type;
+    }
 
     public bool is_bookmark () {
         return place_type == Marlin.PlaceType.BOOKMARK;
