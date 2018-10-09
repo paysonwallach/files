@@ -12,6 +12,16 @@ public class PopupMenuBuilder : Object {
         return popupmenu;
     }
 
+    public Gtk.Menu build_from_model (MenuModel model) {
+        var menu = new Gtk.Menu ();
+        for (int lasting = itens.length; lasting != 0; lasting--) {
+            menu.prepend (itens[lasting]);
+        }
+
+        menu.add (model);
+        return menu;
+    }
+
     public PopupMenuBuilder add_open (MenuitemCallback open_cb) {
         return add_item (new Gtk.MenuItem.with_mnemonic (_("Open")), open_cb);
     }
