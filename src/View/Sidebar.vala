@@ -1480,7 +1480,6 @@ namespace Marlin.Places {
                         Column.BOOKMARK, out is_bookmark
             );
             bool is_plugin = (type == Marlin.PlaceType.PLUGIN_ITEM);
-            print (@"\n1$type 1\n");
 
             bool show_mount, show_unmount, show_eject, show_rescan, show_format, show_start, show_stop;
             check_visibility (mount,
@@ -1507,14 +1506,20 @@ namespace Marlin.Places {
                 store.get (iter, Column.MENU_MODEL, out model);
 
                 var menu = new PopupMenuBuilder ()
-                .add_open (open_shortcut_cb)
-                .add_open_tab (open_shortcut_in_new_tab_cb)
-                .add_open_window (open_shortcut_in_new_window_cb);
+                .add_open (open_shortcut_cb);
 
                 if (model == null) {
                     menu.build ().popup_at_pointer (event);
                 } else {
-                    menu.add_separator ().build_from_model (model).popup_at_pointer (event);
+                    menu
+                    .add_separator ()
+                    .add_open_tab (open_shortcut_in_new_tab_cb)
+                    .add_open_window (open_shortcut_in_new_window_cb)
+                    .add_separator ()
+                    .build_from_model (model);
+
+                    menu.build_from_model (model)
+                    .popup_at_pointer (event);
                 }
             } else {
                 var menu = new PopupMenuBuilder ()
