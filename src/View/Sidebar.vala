@@ -1461,7 +1461,7 @@ namespace Marlin.Places {
             }
         }
 
-        private new void popup_menu (Gdk.EventButton? event) {
+        private void show_popup_menu (Gdk.EventButton? event) {
             Gtk.TreeIter iter;
             if (!get_selected_iter (out iter)) {
                 return;
@@ -1482,7 +1482,7 @@ namespace Marlin.Places {
                         Column.BOOKMARK, out is_bookmark
             );
             bool is_plugin = (type == Marlin.PlaceType.PLUGIN_ITEM);
-            print (@"$type\n");
+            print (@"\n1$type 1\n");
 
             bool show_mount, show_unmount, show_eject, show_rescan, show_format, show_start, show_stop;
             check_visibility (mount,
@@ -1505,8 +1505,19 @@ namespace Marlin.Places {
             bool show_property = show_mount || show_unmount || show_eject || uri == "file:///";
 
             if (is_plugin) {
-                var menu = new PopupMenuBuilder ();
-                menu.build ().popup_at_pointer (event);
+                MenuModel model;
+                store.get (iter, Column.MENU_MODEL, out model);
+
+                var menu = new PopupMenuBuilder ()
+                .add_open (open_shortcut_cb)
+                .add_open_tab (open_shortcut_in_new_tab_cb)
+                .add_open_window (open_shortcut_in_new_window_cb);
+
+                if (model == null) {
+                    menu.build ().popup_at_pointer (event);
+                } else {
+                    menu.add_separator ().build_from_model (model).popup_at_pointer (event);
+                }
             } else {
                 var menu = new PopupMenuBuilder ()
                 .add_open (open_shortcut_cb)
@@ -1817,7 +1828,8 @@ namespace Marlin.Places {
 
                 case Gdk.BUTTON_SECONDARY:
                     if (path != null && !category_at_path (path)) {
-                        popup_menu (event);
+                        //  Add idle to finish the event before open popup menu
+                        Idle.add (() => { show_popup_menu (event); return false; });
                     }
 
                     break;
