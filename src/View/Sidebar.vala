@@ -1516,9 +1516,7 @@ namespace Marlin.Places {
                     .add_open_tab (open_shortcut_in_new_tab_cb)
                     .add_open_window (open_shortcut_in_new_window_cb)
                     .add_separator ()
-                    .build_from_model (model);
-
-                    menu.build_from_model (model)
+                    .build_from_model (model)
                     .popup_at_pointer (event);
                 }
             } else {
@@ -1675,10 +1673,12 @@ namespace Marlin.Places {
             var crt = renderer as Gtk.CellRendererText;
             string text;
             bool is_category, show_eject_button;
+            Icon? action_icon;
             uint64 disk_size = 0;
             model.@get (iter, Column.NAME, out text,
                               Column.IS_CATEGORY, out is_category,
                               Column.DISK_SIZE, out disk_size,
+                              Column.ACTION_ICON, out action_icon,
                               Column.SHOW_EJECT, out show_eject_button, -1);
 
             if (is_category) {
