@@ -13,12 +13,11 @@ public class PopupMenuBuilder : Object {
     }
 
     public Gtk.Menu build_from_model (MenuModel model) {
-        var menu = new Gtk.Menu ();
-        for (int lasting = itens.length; lasting != 0; lasting--) {
+        var menu = new Gtk.Menu.from_model (model);
+        for (int lasting = itens.length; lasting >= 0; lasting--) {
             menu.prepend (itens[lasting]);
         }
 
-        menu.add (model);
         return menu;
     }
 
