@@ -56,6 +56,7 @@ namespace Marlin {
             FREE_SPACE,
             DISK_SIZE,
             PLUGIN_CALLBACK,
+            MENU_MODEL,
             COUNT
         }
 
@@ -85,7 +86,8 @@ namespace Marlin {
                                         typeof (uint),              /* Spinner pulse */
                                         typeof (uint64),            /* Free space */
                                         typeof (uint64),            /* For disks, total size */
-                                        typeof (Marlin.PluginCallbackFunc)
+                                        typeof (Marlin.PluginCallbackFunc),
+                                        typeof (MenuModel)
                                         );
 
             content_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
@@ -97,7 +99,11 @@ namespace Marlin {
             add_extra_item (network_category_reference, text, tooltip, icon, cb);
         }
 
-        public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb) {
+        public void add_extra_network_item_with_menu_model (string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb, MenuModel? menu = null) {
+            add_extra_item (network_category_reference, text, tooltip, icon, cb, menu);
+        }
+
+        public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb, MenuModel? menu = null) {
             Gtk.TreeIter iter;
             store.get_iter (out iter, category.get_path ());
             iter = add_place (PlaceType.PLUGIN_ITEM,
@@ -114,6 +120,9 @@ namespace Marlin {
                 store.@set (iter, Column.PLUGIN_CALLBACK, cb);
             }
 
+            if (menu != null) {
+                store.@set (iter, Column.MENU_MODEL, menu);
+            }
         }
 
        protected abstract Gtk.TreeIter add_place (Marlin.PlaceType place_type,
