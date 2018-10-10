@@ -212,15 +212,14 @@ namespace Marlin.Places {
                                 "active", Column.SHOW_SPINNER,
                                 "pulse", Column.SPINNER_PULSE);
 
-            crpb = new Gtk.CellRendererPixbuf (); /* Icon for eject button  (hidden while ejecting or unmounted) and another signs */
+            crpb = new Gtk.CellRendererPixbuf (); /* Icon for eject button or other signs */
             this.eject_spinner_cell_renderer = crpb;
             crpb.stock_size = Gtk.IconSize.MENU;
             crpb.xpad = ICON_XPAD;
             crpb.ypad = BOOKMARK_YPAD;
 
             col.pack_start (crpb, false);
-            col.set_attributes (crpb,
-                                "gicon", Column.ACTION_ICON);
+            col.set_attributes (crpb, "gicon", Column.ACTION_ICON);
 
             var cre = new Granite.Widgets.CellRendererExpander (); /* Expander button for categories */
             expander_renderer = cre;
