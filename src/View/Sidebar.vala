@@ -1468,9 +1468,9 @@ namespace Marlin.Places {
             }
         }
 
-        private void show_popup_menu (Gdk.EventButton? event) {
+        private void show_popup_menu (Gdk.EventButton? event, Gtk.TreePath? path = null) {
             Gtk.TreeIter iter;
-            if (!get_selected_iter (out iter)) {
+            if (!store.get_iter (out iter, path)) {
                 return;
             }
 
@@ -1492,15 +1492,15 @@ namespace Marlin.Places {
 
             bool show_mount, show_unmount, show_eject, show_rescan, show_format, show_start, show_stop;
             check_visibility (mount,
-                                volume,
-                                drive,
-                                out show_mount,
-                                out show_unmount,
-                                out show_eject,
-                                out show_rescan,
-                                out show_format,
-                                out show_start,
-                                out show_stop);
+                              volume,
+                              drive,
+                              out show_mount,
+                              out show_unmount,
+                              out show_eject,
+                              out show_rescan,
+                              out show_format,
+                              out show_start,
+                              out show_stop);
 
             /* Context menu shows Empty Trash for the Trash icon and for any mount with a native
                 * file system whose trash contains files */
@@ -1535,10 +1535,22 @@ namespace Marlin.Places {
                 .add_open_tab (open_shortcut_in_new_tab_cb)
                 .add_open_window (open_shortcut_in_new_window_cb);
 
-                if (is_bookmark) { menu.add_separator ().add_remove (remove_shortcut_cb).add_rename (rename_shortcut_cb); }
-                if (show_mount) { menu.add_separator ().add_mount (mount_selected_shortcut); }
-                if (show_unmount) { menu.add_separator ().add_unmount (unmount_shortcut_cb); }
-                if (show_eject) { menu.add_separator ().add_eject (eject_shortcut_cb); }
+                if (is_bookmark) {
+                    menu.add_separator ().add_remove (remove_shortcut_cb)
+                    .add_rename (rename_shortcut_cb);
+                }
+
+                if (show_mount) {
+                    menu.add_separator ().add_mount (mount_selected_shortcut);
+                }
+
+                if (show_unmount) {
+                    menu.add_separator ().add_unmount (unmount_shortcut_cb);
+                }
+
+                if (show_eject) {
+                    menu.add_separator ().add_eject (eject_shortcut_cb);
+                }
 
                 if (show_empty_trash) {
                     Gtk.MenuItem popupmenu_empty_trash_item;
@@ -1549,7 +1561,9 @@ namespace Marlin.Places {
                     menu.add_item (popupmenu_empty_trash_item, empty_trash_cb);
                 }
 
-                if (show_property) { menu.add_property (show_drive_info_cb); }
+                if (show_property) {
+                    menu.add_property (show_drive_info_cb);
+                }
 
                 menu.build ().popup_at_pointer (event);
             }
@@ -1835,8 +1849,7 @@ namespace Marlin.Places {
 
                 case Gdk.BUTTON_SECONDARY:
                     if (path != null && !category_at_path (path)) {
-                        //  Add idle to finish the event before open popup menu
-                        Idle.add (() => { show_popup_menu (event); return false; });
+                        show_popup_menu (event, path);
                     }
 
                     break;
