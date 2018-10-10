@@ -99,8 +99,37 @@ namespace Marlin {
             add_extra_item (network_category_reference, text, tooltip, icon, cb);
         }
 
-        public void add_plugin_item (string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb, MenuModel? menu = null, Icon? action_icon = null) {
-            add_extra_item (network_category_reference, text, tooltip, icon, cb, menu, action_icon);
+        public void add_plugin_item (PluginItem item) {
+            Gtk.TreeIter parent;
+            store.get_iter (out parent, network_category_reference.get_path ());
+
+            Gtk.TreeIter iter;
+            store.append (out iter, parent);
+
+            store.@set (
+                iter,
+                Column.ROW_TYPE, item.place_type,
+                Column.URI, item.uri,
+                Column.DRIVE, item.drive,
+                Column.VOLUME, item.volume,
+                Column.MOUNT, item.mount,
+                Column.NAME, item.name,
+                Column.ICON, item.icon,
+                Column.INDEX, 0,
+                Column.CAN_EJECT, item.can_eject,
+                Column.NO_EJECT, !item.can_eject,
+                Column.BOOKMARK, item.is_bookmark (),
+                Column.IS_CATEGORY, item.is_category (),
+                Column.NOT_CATEGORY, !item.is_category (),
+                Column.TOOLTIP, item.tooltip,
+                Column.ACTION_ICON, item.action_icon,
+                Column.SHOW_SPINNER, item.show_spinner,
+                Column.SHOW_EJECT, item.can_eject,
+                Column.FREE_SPACE, item.free_space,
+                Column.DISK_SIZE, item.disk_size,
+                Column.PLUGIN_CALLBACK, item.callback,
+                Column.MENU_MODEL, item.menu_model
+            );
         }
 
         public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon,
