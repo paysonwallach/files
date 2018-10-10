@@ -49,8 +49,6 @@ namespace Marlin.Places {
         VolumeMonitor volume_monitor;
         unowned Marlin.TrashMonitor monitor;
         Gtk.IconTheme theme;
-        //  TODO: Remove deprecated attribute
-        [Version (deprecated = true)]
         GLib.Icon eject_icon;
 
         int eject_button_size = 20;
@@ -337,24 +335,18 @@ namespace Marlin.Places {
             get_eject_icon ();
         }
 
-        //  TODO: Remove deprecated method
-        [Version (deprecated = true)]
         private void get_eject_icon () {
             if (eject_icon == null) {
                 eject_icon = new ThemedIcon.with_default_fallbacks ("media-eject-symbolic");
             }
         }
 
-        //  TODO: Should use libcore's TreeItem.add_place (Place place) instead
-        [Version (deprecated = true, replacement = "TreeItem.add_place (Place place)")]
         protected Gtk.TreeIter? add_category (Marlin.PlaceType place_type, string name, string tooltip) {
             return add_place (place_type, null,
                               name, null, null, null, null, null,
                               0, tooltip);
         }
 
-        //  TODO: Should use libcore's TreeItem.add_place (Place place) instead
-        [Version (deprecated = true, replacement = "TreeItem.add_place (Place place)")]
         protected override Gtk.TreeIter add_place (Marlin.PlaceType place_type,
                                                    Gtk.TreeIter? parent,
                                                    string name,
