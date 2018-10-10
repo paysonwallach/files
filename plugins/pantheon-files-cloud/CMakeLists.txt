@@ -15,7 +15,8 @@ include_directories(${CMAKE_SOURCE_DIR}/libcore/)
 include_directories(${CMAKE_BINARY_DIR}/libcore/)
 
 vala_precompile(VALA_C pantheon-files-cloud
-    plugin.vala
+    src/plugin.vala
+    src/CloudManager.vala
 PACKAGES
     granite
     gtk+-3.0
