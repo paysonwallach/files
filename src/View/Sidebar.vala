@@ -230,8 +230,7 @@ namespace Marlin.Places {
             crpb.ypad = BOOKMARK_YPAD;
 
             col.pack_start (crpb, false);
-            col.set_attributes (crpb,
-                                "gicon", Column.ACTION_ICON);
+            col.set_attributes (crpb, "gicon", Column.ACTION_ICON);
 
             var cre = new Granite.Widgets.CellRendererExpander (); /* Expander button for categories */
             expander_renderer = cre;
