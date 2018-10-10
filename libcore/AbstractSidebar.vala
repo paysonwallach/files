@@ -132,8 +132,7 @@ namespace Marlin {
             );
         }
 
-        public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon,
-                                    Marlin.PluginCallbackFunc? cb, MenuModel? menu = null, Icon? action_icon = null) {
+        public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb) {
             Gtk.TreeIter iter;
             store.get_iter (out iter, category.get_path ());
             iter = add_place (PlaceType.PLUGIN_ITEM,
@@ -145,14 +144,9 @@ namespace Marlin {
                              null,
                              null,
                              0,
-                             tooltip,
-                             action_icon);
+                             tooltip);
             if (cb != null) {
                 store.@set (iter, Column.PLUGIN_CALLBACK, cb);
-            }
-
-            if (menu != null) {
-                store.@set (iter, Column.MENU_MODEL, menu);
             }
         }
 
