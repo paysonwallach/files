@@ -29,11 +29,6 @@ public class Marlin.Plugins.Cloud.Manager : Object {
             foreach (var provider in collector.get_providers ()) {
                 provider.accounts_changed.connect (() => {
                     accounts_changed ();
-                    foreach (var account in provider.get_accounts ()) {
-                        account.notify.connect (() => {
-                            accounts_changed ();
-                        });
-                    }
                 });
             }
         });
