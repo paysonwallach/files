@@ -52,14 +52,14 @@ public class Marlin.Plugins.Cloud.Plugin : Marlin.Plugins.Base {
     }
 
     public Marlin.PluginItem adapt_plugin_item (CloudProviders.Account account) {
-            var item = new Marlin.PluginItem ();
-            item.name = account.name;
-            item.tooltip = account.path;
-            item.uri = account.path;
-            item.icon = account.icon;
-            item.show_spinner = account.get_status () == CloudProviders.AccountStatus.SYNCING;
-            item.menu_model = account.menu_model;
-            item.action_icon = get_icon (account.get_status ());
+        var item = new Marlin.PluginItem ();
+        item.name = account.name;
+        item.tooltip = account.path;
+        item.uri = account.path;
+        item.icon = account.icon;
+        item.show_spinner = account.get_status () == CloudProviders.AccountStatus.SYNCING;
+        item.menu_model = account.menu_model;
+        item.action_icon = get_icon (account.get_status ());
         return item;
     }
 
