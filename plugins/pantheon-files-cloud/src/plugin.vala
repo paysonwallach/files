@@ -44,6 +44,14 @@ public class Marlin.Plugins.Cloud.Plugin : Marlin.Plugins.Base {
     public override void update_sidebar (Gtk.Widget widget) {
         var sidebar = widget as Marlin.AbstractSidebar;
         foreach (CloudProviders.Account account in cloud_manager.get_accounts ()) {
+            Gtk.TreeIter iter = sidebar.add_or_update_plugin_item (adapt_plugin_item (account));
+            account.notify.connect (() => {
+                sidebar.add_or_update_plugin_item (adapt_plugin_item (account), iter);
+            });
+        }
+    }
+
+    public Marlin.PluginItem adapt_plugin_item (CloudProviders.Account account) {
             var item = new Marlin.PluginItem ();
             item.name = account.name;
             item.tooltip = account.path;
@@ -52,9 +60,7 @@ public class Marlin.Plugins.Cloud.Plugin : Marlin.Plugins.Base {
             item.show_spinner = account.get_status () == CloudProviders.AccountStatus.SYNCING;
             item.menu_model = account.menu_model;
             item.action_icon = get_icon (account.get_status ());
-
-            sidebar.add_plugin_item (item);
-        }
+        return item;
     }
 
     /**
