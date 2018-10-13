@@ -213,7 +213,7 @@ namespace Marlin.Places {
                                 "active", Column.SHOW_SPINNER,
                                 "pulse", Column.SPINNER_PULSE);
 
-            crpb = new Gtk.CellRendererPixbuf (); /* Icon for eject button or other signs */
+            crpb = new Gtk.CellRendererPixbuf (); /* Icon for eject button  (hidden while ejecting or unmounted) and another signs */
             this.eject_spinner_cell_renderer = crpb;
             crpb.stock_size = Gtk.IconSize.MENU;
             crpb.xpad = ICON_XPAD;
@@ -1528,7 +1528,6 @@ namespace Marlin.Places {
             if (!store.get_iter (out iter, path)) {
                 return;
             }
-            last_popup_path = path;
 
             Marlin.PlaceType type;
             Drive drive;

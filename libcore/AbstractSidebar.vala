@@ -111,7 +111,8 @@ namespace Marlin {
          */
         public abstract Gtk.TreeIter add_or_update_plugin_item (PluginItem item, Gtk.TreeIter? iter = null);
 
-        public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb) {
+        public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon,
+                                    Marlin.PluginCallbackFunc? cb, Icon? action_icon = null) {
             Gtk.TreeIter iter;
             store.get_iter (out iter, category.get_path ());
             iter = add_place (PlaceType.PLUGIN_ITEM,
@@ -123,7 +124,8 @@ namespace Marlin {
                              null,
                              null,
                              0,
-                             tooltip);
+                             tooltip,
+                             action_icon);
             if (cb != null) {
                 store.@set (iter, Column.PLUGIN_CALLBACK, cb);
             }
