@@ -87,7 +87,7 @@ namespace Marlin {
                                         typeof (uint64),            /* Free space */
                                         typeof (uint64),            /* For disks, total size */
                                         typeof (Marlin.PluginCallbackFunc),
-                                        typeof (MenuModel)
+                                        typeof (GLib.MenuModel)
                                         );
 
             content_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
@@ -98,18 +98,6 @@ namespace Marlin {
         public void add_extra_network_item (string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb) {
             add_extra_item (network_category_reference, text, tooltip, icon, cb);
         }
-
-        /**
-         * Adds plugin item to TreeStore or update if a iter is present
-         *
-         * @param item is a {@link Marlin.AbstractSidebar.PluginItem} that resumes
-         * every column a plugin would need of the TreeStore
-         *
-         * @param iter receives the iterator that points to TreeModel to be updated
-         *
-         * @return TreeIter to be used later to update the item
-         */
-        public abstract Gtk.TreeIter add_or_update_plugin_item (PluginItem item, Gtk.TreeIter? iter = null);
 
         public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon,
                                     Marlin.PluginCallbackFunc? cb, Icon? action_icon = null) {
@@ -142,6 +130,18 @@ namespace Marlin {
                                                   uint index,
                                                   string? tooltip = null,
                                                   Icon? action_icon = null) ;
+
+        /**
+         * Adds plugin item to TreeStore or update if a iter is present
+         *
+         * @param item is a {@link Marlin.AbstractSidebar.PluginItem} that resumes
+         * every column a plugin would need of the TreeStore
+         *
+         * @param iter receives the iterator that points to TreeModel to be updated
+         *
+         * @return TreeIter to be used later to update the item
+         */
+        public abstract Gtk.TreeIter add_or_update_plugin_item (PluginItem item, Gtk.TreeIter? iter = null);
     }
 
     public class PluginItem : Object {
@@ -160,7 +160,7 @@ namespace Marlin {
         public uint64 free_space { get;set; default = 0; }
         public uint64 disk_size { get;set; default = 0; }
         public MenuModel? menu_model { get;set; }
-        public PluginCallbackFunc? callback { get;set; }
+        public PluginCallbackFunc? cb;
 
         public bool is_bookmark () {
             return place_type == Marlin.PlaceType.BOOKMARK;
@@ -168,9 +168,9 @@ namespace Marlin {
 
         public bool is_category () {
             return (place_type == Marlin.PlaceType.BOOKMARKS_CATEGORY) ||
-                   (place_type == Marlin.PlaceType.PERSONAL_CATEGORY)  ||
-                   (place_type == Marlin.PlaceType.STORAGE_CATEGORY)   ||
-                   (place_type == Marlin.PlaceType.NETWORK_CATEGORY);
+                (place_type == Marlin.PlaceType.PERSONAL_CATEGORY)  ||
+                (place_type == Marlin.PlaceType.STORAGE_CATEGORY)   ||
+                (place_type == Marlin.PlaceType.NETWORK_CATEGORY);
         }
     }
 }
