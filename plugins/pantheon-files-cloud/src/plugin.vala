@@ -44,9 +44,9 @@ public class Marlin.Plugins.Cloud.Plugin : Marlin.Plugins.Base {
     public override void update_sidebar (Gtk.Widget widget) {
         var sidebar = widget as Marlin.AbstractSidebar;
         foreach (CloudProviders.Account account in cloud_manager.get_accounts ()) {
-            Gtk.TreeIter iter = sidebar.add_or_update_plugin_item (adapt_plugin_item (account));
+            var reference = sidebar.add_plugin_item (adapt_plugin_item (account), Marlin.PlaceType.NETWORK_CATEGORY);
             account.notify.connect (() => {
-                sidebar.add_or_update_plugin_item (adapt_plugin_item (account), iter);
+                sidebar.update_plugin_item (adapt_plugin_item (account), reference);
             });
         }
     }
