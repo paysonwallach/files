@@ -132,15 +132,25 @@ namespace Marlin {
                                                   Icon? action_icon = null) ;
 
         /**
-         * Adds plugin item to TreeStore or update if a iter is present
+         * Adds plugin item to TreeStore
          *
-         * @param item is a {@link Marlin.AbstractSidebar.PluginItem} that resumes
-         * every column a plugin would need of the TreeStore
+         * @param a {@link Marlin.PluginItem}
          *
-         * @param iter receives the iterator that points to TreeModel to be updated
+         * @param {@link Marlin.PlaceType} with the category it should be appended
          *
-         * @return TreeIter to be used later to update the item
+         * @return TreeRowReference to update later the item or null if add failed
          */
-        public abstract Gtk.TreeIter add_or_update_plugin_item (PluginItem item, Gtk.TreeIter? iter = null);
+        public abstract Gtk.TreeRowReference? add_plugin_item (PluginItem item, Marlin.PlaceType category);
+
+         /**
+         * Update plugin item on TreeStore
+         *
+         * @param a {@link Marlin.PluginItem}
+         *
+         * @param TreeRowReference receives the row reference that points to TreeModel to be updated
+         *
+         * @return true if update was successful
+         */
+        public abstract bool update_plugin_item (PluginItem item, Gtk.TreeRowReference rowref);
     }
 }

@@ -441,16 +441,39 @@ namespace Marlin.Places {
             return iter;
         }
 
-        public override Gtk.TreeIter add_or_update_plugin_item (PluginItem item, Gtk.TreeIter? iter = null) {
+        public override Gtk.TreeRowReference? add_plugin_item (PluginItem item, Marlin.PlaceType category) {
             Gtk.TreeIter parent;
-            store.get_iter (out parent, network_category_reference.get_path ());
+            Gtk.TreeIter iter;
 
-            if (iter == null) {
-                store.append (out iter, parent);
-            } else if (!store.iter_is_valid (iter)) {
-                return iter;
+            store.get_iter (out parent, network_category_reference.get_path ());
+            store.append (out iter, parent);
+
+            var path = store.get_path (iter);
+            if (path == null) {
+                return null;
             }
 
+            var row_reference = new Gtk.TreeRowReference (store, path);
+            set_plugin_item (item, iter);
+            start_spinner (iter);
+
+            return row_reference;
+        }
+
+        public override bool update_plugin_item (PluginItem item, Gtk.TreeRowReference rowref) {
+            if (!rowref.valid ()) {
+                return false;
+            }
+
+            Gtk.TreeIter iter;
+            store.get_iter (out iter, rowref.get_path ());
+            set_plugin_item (item, iter);
+            start_spinner (iter);
+
+            return true;
+        }
+
+        private void set_plugin_item (PluginItem item, Gtk.TreeIter iter) {
             store.@set (
                 iter,
                 Column.ROW_TYPE, PluginItem.place_type,
@@ -463,9 +486,9 @@ namespace Marlin.Places {
                 Column.INDEX, 0,
                 Column.CAN_EJECT, item.can_eject,
                 Column.NO_EJECT, !item.can_eject,
-                Column.BOOKMARK, item.is_bookmark (),
-                Column.IS_CATEGORY, item.is_category (),
-                Column.NOT_CATEGORY, !item.is_category (),
+                Column.BOOKMARK, false,
+                Column.IS_CATEGORY, false,
+                Column.NOT_CATEGORY, true,
                 Column.TOOLTIP, item.tooltip,
                 Column.ACTION_ICON, item.action_icon,
                 Column.SHOW_SPINNER, item.show_spinner,
@@ -475,10 +498,6 @@ namespace Marlin.Places {
                 Column.PLUGIN_CALLBACK, item.cb,
                 Column.MENU_MODEL, item.menu_model
             );
-
-            start_spinner (iter);
-
-            return iter;
         }
 
         public bool has_bookmark (string uri) {
