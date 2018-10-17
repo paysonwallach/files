@@ -50,7 +50,6 @@ namespace Marlin.Places {
         unowned Marlin.TrashMonitor monitor;
         Gtk.IconTheme theme;
         GLib.Icon eject_icon;
-        Gtk.TreePath? last_popup_path;
 
         int eject_button_size = 20;
         uint n_builtins_before; /* Number of builtin (immovable) bookmarks before the personal bookmarks */
@@ -2227,7 +2226,9 @@ namespace Marlin.Places {
 /* POPUP MENU CALLBACK FUNCTIONS */
 
         private void open_shortcut_from_menu (Marlin.OpenFlag flags) {
-            open_selected_bookmark (store, last_popup_path, flags);
+            Gtk.TreePath path;
+            tree_view.get_cursor (out path, null);
+            open_selected_bookmark (store, path, flags);
         }
 
         private void open_shortcut_cb (Gtk.MenuItem item) {
