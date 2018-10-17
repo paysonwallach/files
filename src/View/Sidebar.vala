@@ -70,6 +70,7 @@ namespace Marlin.Places {
         bool dragged_out_of_window;
         bool renaming = false;
         bool local_only;
+        Gee.HashMap<Marlin.PlaceType, Gtk.TreeRowReference> categories = new Gee.HashMap<Marlin.PlaceType, Gtk.TreeRowReference> ();
 
         /* Identifiers for target types */
         public enum TargetType {
@@ -365,9 +366,16 @@ namespace Marlin.Places {
         }
 
         protected Gtk.TreeIter? add_category (Marlin.PlaceType place_type, string name, string tooltip) {
-            return add_place (place_type, null,
+            Gtk.TreeIter iter = add_place (place_type, null,
                               name, null, null, null, null, null,
                               0, tooltip);
+
+            var rowref = new Gtk.TreeRowReference (store, store.get_path (iter));
+            if (rowref.valid ()) {
+                categories[place_type] = rowref;
+            }
+
+            return iter;
         }
 
         protected override Gtk.TreeIter add_place (Marlin.PlaceType place_type,
@@ -445,7 +453,7 @@ namespace Marlin.Places {
             Gtk.TreeIter parent;
             Gtk.TreeIter iter;
 
-            store.get_iter (out parent, network_category_reference.get_path ());
+            store.get_iter (out parent, categories[category].get_path ());
             store.append (out iter, parent);
 
             var path = store.get_path (iter);
