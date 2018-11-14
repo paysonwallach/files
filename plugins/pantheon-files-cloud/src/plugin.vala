@@ -54,8 +54,8 @@ public class Marlin.Plugins.Cloud.Plugin : Marlin.Plugins.Base {
         }
     }
 
-    public Marlin.PluginItem adapt_plugin_item (CloudProviders.Account account) {
-        var item = new Marlin.PluginItem ();
+    public Marlin.SidebarPluginItem adapt_plugin_item (CloudProviders.Account account) {
+        var item = new Marlin.SidebarPluginItem ();
         item.name = account.name;
         item.tooltip = account.path;
         item.uri = account.path;
