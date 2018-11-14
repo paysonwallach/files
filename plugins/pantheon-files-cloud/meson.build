@@ -1,6 +1,8 @@
 PLUG_NAME = 'pantheon-files-cloud'
 
 PLUG_DEPS = [
+    DEPS,
+    C_CORE_DEP,
     COMMON_DEPS,
     dependency('cloudproviders'),
 ]
@@ -14,7 +16,7 @@ PLUG_LIB = shared_library (
     PLUG_NAME,
     SRC,
 
-    dependencies : [PLUG_DEPS, DEPS, C_CORE_DEP],
+    dependencies : PLUG_DEPS,
     include_directories: CORE_INC,
     install: true,
     install_dir: INSTALL_DIR,
