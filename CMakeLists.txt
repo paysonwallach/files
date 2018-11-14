@@ -11,8 +11,10 @@ set (GETTEXT_PACKAGE ${CMAKE_PROJECT_NAME})
 set (PIXMAP_DIR "${CMAKE_INSTALL_PREFIX}/share/pixmaps/${CMAKE_PROJECT_NAME}/")
 set (GNOMELOCALEDIR "${CMAKE_INSTALL_PREFIX}/share/locale/")
 set (PLUGIN_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/${CMAKE_PROJECT_NAME}/plugins/")
-set (UI_DIR "${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/ui/")
+set (UI_DIR "${CMAKE_INSTALL_PREFIX}/share/${CMAKE_PROJECT_NAME}/ui")
+set (APP_NAME "${CMAKE_PROJECT_NAME}")
 set (TESTDATA_DIR "${CMAKE_SOURCE_DIR}/data/tests")
+set (TERMINAL_NAME "io.elementary.terminal")
 set (PACKAGE_VERSION 4.0)
 set (VERSION 4.0)
 configure_file (${CMAKE_SOURCE_DIR}/config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
@@ -34,7 +36,7 @@ OPTION (WITH_UNITY "Add Unity launcher support" ON)
 pkg_check_modules (UNITY unity>=4.0.0)
 
 set (COMMON_DEPS
-    granite>=5.0.0
+    granite>=5.2.0
     glib-2.0>=2.29.0
     gthread-2.0
     gio-2.0

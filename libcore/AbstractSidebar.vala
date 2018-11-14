@@ -95,9 +95,12 @@ namespace Marlin {
             content_box.show_all ();
         }
 
-        public void add_extra_network_item (string text, string tooltip, Icon? icon, Marlin.PluginCallbackFunc? cb) {
+        public void add_extra_network_item (string text, string tooltip,
+                                            Icon? icon, Marlin.PluginCallbackFunc? cb) {
+
             add_extra_item (network_category_reference, text, tooltip, icon, cb);
         }
+
 
         public void add_extra_item (Gtk.TreeRowReference category, string text, string tooltip, Icon? icon,
                                     Marlin.PluginCallbackFunc? cb, Icon? action_icon = null) {
@@ -134,23 +137,23 @@ namespace Marlin {
         /**
          * Adds plugin item to TreeStore
          *
-         * @param a {@link Marlin.PluginItem}
+         * @param a {@link Marlin.SidebarPluginItem}
          *
          * @param {@link Marlin.PlaceType} with the category it should be appended
          *
          * @return TreeRowReference to update later the item or null if add failed
          */
-        public abstract Gtk.TreeRowReference? add_plugin_item (PluginItem item, Marlin.PlaceType category);
+        public abstract Gtk.TreeRowReference? add_plugin_item (SidebarPluginItem item, Marlin.PlaceType category);
 
          /**
          * Update plugin item on TreeStore
          *
-         * @param a {@link Marlin.PluginItem}
+         * @param a {@link Marlin.SidebarPluginItem}
          *
          * @param TreeRowReference receives the row reference that points to TreeModel to be updated
          *
          * @return true if update was successful
          */
-        public abstract bool update_plugin_item (PluginItem item, Gtk.TreeRowReference rowref);
+        public abstract bool update_plugin_item (SidebarPluginItem item, Gtk.TreeRowReference rowref);
     }
 }
