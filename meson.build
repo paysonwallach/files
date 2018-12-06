@@ -53,11 +53,6 @@ add_global_arguments (
     language:'c'
 )
 
-add_project_arguments(
-    '--vapidir', join_paths(meson.source_root (), 'vapi'),
-    language: 'vala'
-)
-
 COMMON_DEPS = [
     dependency ('glib-2.0', version: '>=2.29.0'),
     dependency ('gio-2.0'),
