@@ -16,8 +16,6 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - libstdc++-5-dev
-      - libcloudproviders0
-      - libcloudproviders-dev
 
 install:
   - npm i -g @elementaryos/houston
