@@ -1497,6 +1497,8 @@ namespace FM {
                 drag_file_list = get_selected_files_for_transfer ();
             }
 
+            Marlin.DndHandler.set_selection_data_from_file_list (selection_data, drag_file_list);
+
             if (drag_file_list == null) {
                 return;
             }
@@ -1508,8 +1510,6 @@ namespace FM {
             } else {
                 Gtk.drag_set_icon_name (context, "stock-file", 0, 0);
             }
-
-            Marlin.DndHandler.set_selection_data_from_file_list (selection_data, drag_file_list);
         }
 
         private void on_drag_data_delete (Gdk.DragContext context) {
@@ -1517,6 +1517,7 @@ namespace FM {
             GLib.Signal.stop_emission_by_name (get_real_view (), "drag-data-delete");
         }
 
+        /* Called on completion of drag/drop */
         private void on_drag_end (Gdk.DragContext context) {
             cancel_timeout (ref drag_scroll_timer_id);
             drag_file_list = null;
@@ -1561,6 +1562,7 @@ namespace FM {
             Gtk.TargetList list = null;
             string? uri = null;
             bool ok_to_drop = false;
+            drop_occurred = true;
 
             Gdk.Atom target = Gtk.drag_dest_find_target (get_real_view (), context, list);
 
@@ -1585,9 +1587,9 @@ namespace FM {
             }
 
             if (ok_to_drop) {
-                drop_occurred = true;
                 /* request the drag data from the source (initiates
-                 * saving in case of XdndDirectSave).*/
+                 * saving in case of XdndDirectSave). This result in Gtk.drag_finish being called if
+                 * drop data is received. */
                 Gtk.drag_get_data (get_real_view (), context, target, timestamp);
             }
 
@@ -1603,7 +1605,6 @@ namespace FM {
                                             uint timestamp
                                             ) {
             bool success = false;
-
             if (!drop_data_ready) {
                 /* We don't have the drop data - extract uri list from selection data */
                 string? text;
@@ -1651,11 +1652,13 @@ namespace FM {
                             break;
                     }
                 }
+
                 Gtk.drag_finish (context, success, false, timestamp);
                 on_drag_leave (context, timestamp);
             }
         }
 
+        /* Called BEFORE drag-drop and on leaving the destination widget */
         private void on_drag_leave (Gdk.DragContext context, uint timestamp) {
             /* reset the drop-file for the icon renderer */
             icon_renderer.set_property ("drop-file", GLib.Value (typeof (Object)));
@@ -1671,9 +1674,6 @@ namespace FM {
 
             /* disable the highlighting of the items in the view */
             highlight_path (null);
-
-            /* Prepare to receive another drop */
-            drop_data_ready = false;
         }
 
 /** DnD helpers */
