@@ -59,26 +59,27 @@ public class Marlin.View.Chrome.HeaderBar : Hdy.HeaderBar {
     }
 
     construct {
+        Gtk.Box button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+        button_box.margin_top = 3;
+        button_box.margin_bottom = 3;
+
         button_back = new Marlin.View.Chrome.ButtonWithMenu.from_icon_name (
-            "go-previous-symbolic", Gtk.IconSize.LARGE_TOOLBAR
+            "go-previous-symbolic", Gtk.IconSize.BUTTON
         );
 
         button_back.tooltip_markup = Granite.markup_accel_tooltip ({"<Alt>Left"}, _("Previous"));
-        button_back.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+        button_box.add (button_back);
 
         button_forward = new Marlin.View.Chrome.ButtonWithMenu.from_icon_name (
-            "go-next-symbolic", Gtk.IconSize.LARGE_TOOLBAR
+            "go-next-symbolic", Gtk.IconSize.BUTTON
         );
 
         button_forward.tooltip_markup = Granite.markup_accel_tooltip ({"<Alt>Right"}, _("Next"));
-        button_forward.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
-
-        view_switcher.margin_end = 20;
+        button_box.add (button_forward);
 
         location_bar = new LocationBar ();
 
-        pack_start (button_back);
-        pack_start (button_forward);
+        pack_start (button_box);
         pack_start (view_switcher);
         pack_start (location_bar);
         show_all ();
