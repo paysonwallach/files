@@ -19,7 +19,7 @@
 namespace Marlin {
     public class TextRenderer: Gtk.CellRendererText {
 
-        const int MAX_LINES = 5;
+        const int MAX_LINES = 2;
         private int border_radius;
         private int double_border_radius;
         private Gtk.CssProvider text_css;
@@ -181,14 +181,14 @@ namespace Marlin {
 
             if (is_list_view) {
                 layout.set_width ((cell_width - double_border_radius) * Pango.SCALE);
-                layout.set_height (- 1);
+                layout.set_height (-1);
             } else {
                 layout.set_width (wrap_width * Pango.SCALE);
                 layout.set_wrap (this.wrap_mode);
-                layout.set_height (- MAX_LINES);
+                layout.set_height (-MAX_LINES);
             }
 
-            layout.set_ellipsize (Pango.EllipsizeMode.END);
+            layout.set_ellipsize (Pango.EllipsizeMode.MIDDLE);
 
             if (!is_list_view) {
                 layout.set_alignment (Pango.Alignment.CENTER);
