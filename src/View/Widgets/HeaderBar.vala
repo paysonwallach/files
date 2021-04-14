@@ -63,14 +63,14 @@ public class Marlin.View.Chrome.HeaderBar : Hdy.HeaderBar {
         button_box.margin_top = 3;
         button_box.margin_bottom = 3;
 
-        button_back = new Marlin.View.Chrome.ButtonWithMenu.from_icon_name (
+        button_back = new View.Chrome.ButtonWithMenu.from_icon_name (
             "go-previous-symbolic", Gtk.IconSize.BUTTON
         );
 
         button_back.tooltip_markup = Granite.markup_accel_tooltip ({"<Alt>Left"}, _("Previous"));
         button_box.add (button_back);
 
-        button_forward = new Marlin.View.Chrome.ButtonWithMenu.from_icon_name (
+        button_forward = new View.Chrome.ButtonWithMenu.from_icon_name (
             "go-next-symbolic", Gtk.IconSize.BUTTON
         );
 
